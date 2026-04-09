@@ -28,6 +28,28 @@ The project supports **80 languages** and can output results as a human-readable
   - `json`
   - `csv`
 
+## Installation
+
+```bash
+# Download the binary
+wget https://github.com/Rabbit-Company/language-detector/releases/latest/download/language-detector-$(uname -m)-gnu
+# Set file permissions
+sudo chmod 777 language-detector-$(uname -m)-gnu
+# Place the binary to `/usr/local/bin`
+sudo mv language-detector-$(uname -m)-gnu /usr/local/bin/language-detector
+# Start language detector
+language-detector
+```
+
+## Upgrade
+
+```bash
+# Download Language Detector
+wget https://github.com/Rabbit-Company/language-detector/releases/latest/download/language-detector-$(uname -m)-gnu
+sudo chmod 777 language-detector-$(uname -m)-gnu
+sudo mv language-detector-$(uname -m)-gnu /usr/local/bin/language-detector
+```
+
 ## How it works
 
 The detector follows a simple pipeline:
