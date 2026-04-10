@@ -115,5 +115,6 @@ pub fn language() -> Language {
 			"ሙሉ",
 			"በሙሉ",
 		],
+		weighted_words: &[],
 	}
 }

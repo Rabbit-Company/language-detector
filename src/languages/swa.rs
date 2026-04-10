@@ -22,5 +22,6 @@ pub fn language() -> Language {
 			"hamta", "hawata", "basi", "lakini", "ila", "au", "na", "tena", "pia", "vilevile", "hata",
 			"hivyo", "ndiyo", "sivyo",
 		],
+		weighted_words: &[],
 	}
 }

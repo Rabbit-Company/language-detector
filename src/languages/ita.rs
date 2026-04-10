@@ -122,5 +122,6 @@ pub fn language() -> Language {
 			"seguire",
 			"conoscere",
 		],
+		weighted_words: &[],
 	}
 }

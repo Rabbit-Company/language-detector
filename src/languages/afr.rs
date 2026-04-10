@@ -128,5 +128,6 @@ pub fn language() -> Language {
 			"heel",
 			"half",
 		],
+		weighted_words: &[],
 	}
 }

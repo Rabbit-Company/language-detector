@@ -114,5 +114,6 @@ pub fn language() -> Language {
 			"कभी",
 			"नहीं",
 		],
+		weighted_words: &[],
 	}
 }

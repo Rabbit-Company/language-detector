@@ -133,5 +133,6 @@ pub fn language() -> Language {
 			"эч",
 			"нерсе",
 		],
+		weighted_words: &[],
 	}
 }

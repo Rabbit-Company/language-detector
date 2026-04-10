@@ -129,5 +129,6 @@ pub fn language() -> Language {
 			"hiç",
 			"zat",
 		],
+		weighted_words: &[],
 	}
 }

@@ -130,5 +130,6 @@ pub fn language() -> Language {
 			"oll",
 			"ken",
 		],
+		weighted_words: &[],
 	}
 }

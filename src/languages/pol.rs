@@ -112,5 +112,6 @@ pub fn language() -> Language {
 			"dlaczego",
 			"razem",
 		],
+		weighted_words: &[],
 	}
 }

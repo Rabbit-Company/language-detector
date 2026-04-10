@@ -120,5 +120,6 @@ pub fn language() -> Language {
 			"gleiche",
 			"verschiedene",
 		],
+		weighted_words: &[],
 	}
 }

@@ -116,5 +116,6 @@ pub fn language() -> Language {
 			"వేగం",
 			"నెమ్మది",
 		],
+		weighted_words: &[],
 	}
 }

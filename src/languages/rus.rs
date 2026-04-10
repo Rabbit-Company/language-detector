@@ -129,5 +129,6 @@ pub fn language() -> Language {
 			"некуда",
 			"некогда",
 		],
+		weighted_words: &[],
 	}
 }

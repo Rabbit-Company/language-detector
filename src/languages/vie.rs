@@ -19,5 +19,6 @@ pub fn language() -> Language {
 			"riêng", "chung", "toàn", "bộ", "phần", "lớn", "hầu", "hết", "đa", "số", "thiểu", "số",
 			"một", "số", "đôi", "chút",
 		],
+		weighted_words: &[],
 	}
 }

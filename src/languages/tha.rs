@@ -129,5 +129,6 @@ pub fn language() -> Language {
 			"อร่อย",
 			"ไม่อร่อย",
 		],
+		weighted_words: &[],
 	}
 }

@@ -128,5 +128,6 @@ pub fn language() -> Language {
 			"pob",
 			"un",
 		],
+		weighted_words: &[],
 	}
 }

@@ -127,5 +127,6 @@ pub fn language() -> Language {
 			"slaodach",
 			"mòran",
 		],
+		weighted_words: &[],
 	}
 }

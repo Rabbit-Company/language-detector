@@ -118,5 +118,6 @@ pub fn language() -> Language {
 			"flyger",
 			"flög",
 		],
+		weighted_words: &[],
 	}
 }

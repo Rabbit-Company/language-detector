@@ -119,5 +119,6 @@ pub fn language() -> Language {
 			"ହାଲୁକା",
 			"ଶୀଘ୍ର",
 		],
+		weighted_words: &[],
 	}
 }

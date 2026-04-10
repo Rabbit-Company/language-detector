@@ -116,5 +116,6 @@ pub fn language() -> Language {
 			"ច្រើន",
 			"តិច",
 		],
+		weighted_words: &[],
 	}
 }

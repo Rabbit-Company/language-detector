@@ -21,5 +21,6 @@ pub fn language() -> Language {
 			"deres", "sin", "sitt", "sine", "være", "ha", "bli", "kunne", "skulle", "ville", "måtte",
 			"burde",
 		],
+		weighted_words: &[],
 	}
 }

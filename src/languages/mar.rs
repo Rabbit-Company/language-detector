@@ -136,5 +136,6 @@ pub fn language() -> Language {
 			"कमी",
 			"सर्व",
 		],
+		weighted_words: &[],
 	}
 }

@@ -117,5 +117,6 @@ pub fn language() -> Language {
 			"moko",
 			"moko",
 		],
+		weighted_words: &[],
 	}
 }

@@ -145,5 +145,6 @@ pub fn language() -> Language {
 			"можна",
 			"нельга",
 		],
+		weighted_words: &[],
 	}
 }

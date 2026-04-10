@@ -144,5 +144,6 @@ pub fn language() -> Language {
 			"taip pat",
 			"taipogi",
 		],
+		weighted_words: &[],
 	}
 }

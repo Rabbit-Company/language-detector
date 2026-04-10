@@ -130,5 +130,6 @@ pub fn language() -> Language {
 			"sen",
 			"senāk",
 		],
+		weighted_words: &[],
 	}
 }

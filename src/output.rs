@@ -1,5 +1,9 @@
 /// Output formatters: table (human-readable), JSON, and CSV.
-use crate::scanner::LanguageScore;
+use crate::scanner::{self, LanguageScore};
+use tabled::{
+	Table, Tabled,
+	settings::{Alignment, Modify, Style, Width, object::Rows},
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum OutputFormat {
@@ -27,85 +31,253 @@ pub fn render(format: OutputFormat, file_path: &str, scores: &[LanguageScore]) {
 	}
 }
 
-fn bcp47_display(bcp47: &Option<String>) -> &str {
-	match bcp47 {
-		Some(s) => s.as_str(),
-		None => "-",
-	}
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+struct InfoRow {
+	#[tabled(rename = "File")]
+	file: String,
+	#[tabled(rename = "Total words parsed")]
+	total_words: String,
+}
+
+#[derive(Tabled)]
+struct DetectedRow {
+	#[tabled(rename = "Detected language")]
+	language: String,
+	#[tabled(rename = "ISO 639-1")]
+	iso1: String,
+	#[tabled(rename = "ISO 639-2")]
+	iso2: String,
+	#[tabled(rename = "BCP 47")]
+	bcp47: String,
+	#[tabled(rename = "Confidence")]
+	confidence: String,
+	#[tabled(rename = "Weighted score")]
+	weighted: String,
+}
+
+#[derive(Tabled)]
+struct ScoreRow {
+	#[tabled(rename = "#")]
+	rank: usize,
+	#[tabled(rename = "Language")]
+	language: String,
+	#[tabled(rename = "639-1")]
+	iso1: String,
+	#[tabled(rename = "639-2")]
+	iso2: String,
+	#[tabled(rename = "BCP 47")]
+	bcp47: String,
+	#[tabled(rename = "Matches")]
+	matches: usize,
+	#[tabled(rename = "Confidence")]
+	confidence: String,
+	#[tabled(rename = "Weighted")]
+	weighted: String,
+}
+
+#[derive(Tabled)]
+struct DebugMatchRow {
+	#[tabled(rename = "Word")]
+	word: String,
+	#[tabled(rename = "Count")]
+	count: usize,
+	#[tabled(rename = "Weight")]
+	weight: String,
+	#[tabled(rename = "Subtotal")]
+	subtotal: String,
+	#[tabled(rename = "Match")]
+	match_type: String,
+}
+
+#[derive(Tabled)]
+struct DebugSummaryRow {
+	#[tabled(rename = "Metric")]
+	metric: String,
+	#[tabled(rename = "Value")]
+	value: String,
 }
 
 fn render_table(file_path: &str, scores: &[LanguageScore]) {
 	let total_words = scores.first().map_or(0, |s| s.total_words);
 
-	println!(
-		"╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗"
-	);
-	println!(
-		"║                                 Language Detection Results                                           ║"
-	);
-	println!(
-		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
-	);
-	println!("║  File: {:<84}          ║", truncate(file_path, 84));
-	println!("║  Total words parsed: {:<70}          ║", total_words);
-	println!(
-		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
-	);
+	// File info table
+	let info_rows = vec![InfoRow {
+		file: truncate(file_path, 60),
+		total_words: total_words.to_string(),
+	}];
+	let mut info_table = Table::new(info_rows);
+	info_table
+		.with(Style::modern())
+		.with(Modify::new(Rows::first()).with(Alignment::center()))
+		.with(Width::wrap(100));
 
-	if let Some(w) = scores.first() {
-		println!(
-			"║                                                                                                      ║"
-		);
-		println!("║  ✓ DETECTED LANGUAGE: {:<70}         ║", w.english_name);
-		println!("║    ISO 639-1: {:<78}         ║", w.iso_639_1);
-		println!("║    ISO 639-2: {:<78}         ║", w.iso_639_2);
-		println!("║    BCP 47:    {:<78}         ║", bcp47_display(&w.bcp47));
-		println!(
-			"║    Confidence: {:<77}         ║",
-			format!(
-				"{:.2}%  ({} / {} words matched)",
-				w.confidence, w.matched_words, w.total_words
-			)
-		);
-		println!(
-			"║                                                                                                      ║"
-		);
+	println!("{}", info_table);
+
+	// Detected language table (if any)
+	if let Some(top) = scores.first() {
+		let detected_row = DetectedRow {
+			language: top.english_name.clone(),
+			iso1: top.iso_639_1.clone(),
+			iso2: top.iso_639_2.clone(),
+			bcp47: bcp47_display(&top.bcp47).to_string(),
+			confidence: format!(
+				"{:.2}% ({} / {})",
+				top.confidence, top.matched_words, top.total_words
+			),
+			weighted: format!("{:.2}", top.weighted_score),
+		};
+		let mut detected_table = Table::new(vec![detected_row]);
+		detected_table
+			.with(Style::modern())
+			.with(Modify::new(Rows::first()).with(Alignment::center()))
+			.with(Width::wrap(100));
+
+		println!("\n{}", detected_table);
 	}
 
-	println!(
-		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
-	);
-	println!(
-		"║  All language scores (top 10):                                                                       ║"
-	);
-	println!(
-		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
-	);
-	println!(
-		"║  {:<3} {:<28} {:<7} {:<7} {:<14} {:<12} {:<12}           ║",
-		"#", "Language", "639-1", "639-2", "BCP 47", "Matches", "Score"
-	);
-	println!(
-		"║  {:-<3} {:-<28} {:-<7} {:-<7} {:-<14} {:-<12} {:-<12}           ║",
-		"", "", "", "", "", "", ""
-	);
+	// Top 10 scores table
+	let score_rows: Vec<ScoreRow> = scores
+		.iter()
+		.take(10)
+		.enumerate()
+		.map(|(i, s)| ScoreRow {
+			rank: i + 1,
+			language: s.english_name.clone(),
+			iso1: s.iso_639_1.clone(),
+			iso2: s.iso_639_2.clone(),
+			bcp47: bcp47_display(&s.bcp47).to_string(),
+			matches: s.matched_words,
+			confidence: format!("{:.2}%", s.confidence),
+			weighted: format!("{:.2}", s.weighted_score),
+		})
+		.collect();
 
-	for (i, s) in scores.iter().take(10).enumerate() {
+	let mut scores_table = Table::new(score_rows);
+	scores_table
+		.with(Style::modern())
+		.with(Modify::new(Rows::first()).with(Alignment::center()))
+		.with(Width::wrap(100));
+
+	println!("\n{}", scores_table);
+}
+
+pub fn render_debug(reports: &[scanner::DebugLanguageReport]) {
+	for report in reports {
+		// Summary table
+		let mut summary_rows = vec![
+			DebugSummaryRow {
+				metric: "Language".to_string(),
+				value: report.language_name.clone(),
+			},
+			DebugSummaryRow {
+				metric: "ISO 639-2".to_string(),
+				value: report.iso_639_2.clone(),
+			},
+			DebugSummaryRow {
+				metric: "BCP 47".to_string(),
+				value: report.bcp47.clone().unwrap_or_else(|| "-".to_string()),
+			},
+			DebugSummaryRow {
+				metric: "Total tokens".to_string(),
+				value: report.total_tokens.to_string(),
+			},
+			DebugSummaryRow {
+				metric: "Pass 1 matches".to_string(),
+				value: report.pass1.total_matches.to_string(),
+			},
+			DebugSummaryRow {
+				metric: "Pass 1 confidence".to_string(),
+				value: format!("{:.2}%", report.confidence),
+			},
+		];
+
+		if let Some(ref p2) = report.pass2 {
+			summary_rows.push(DebugSummaryRow {
+				metric: "Pass 2 weighted score".to_string(),
+				value: format!("{:.2}", p2.total_score),
+			});
+		}
+
+		let mut summary_table = Table::new(summary_rows);
+		summary_table.with(Style::modern());
+
+		println!("{}", summary_table);
+
+		// Pass 1 details table
 		println!(
-			"║  {:<3} {:<28} {:<7} {:<7} {:<14} {:<12} {:<12}           ║",
-			i + 1,
-			s.english_name,
-			s.iso_639_1,
-			s.iso_639_2,
-			bcp47_display(&s.bcp47),
-			s.matched_words,
-			format!("{:.2}%", s.confidence),
+			"\nPass 1 — common_words ({} entries)",
+			report.pass1.lexicon_size
 		);
-	}
+		let pass1_rows: Vec<DebugMatchRow> = report
+			.pass1
+			.matches
+			.iter()
+			.map(|m| DebugMatchRow {
+				word: truncate_word(&m.word, 30),
+				count: m.count,
+				weight: format!("{:.1}", m.weight),
+				subtotal: format!("{:.1}", m.subtotal),
+				match_type: m.match_type.clone(),
+			})
+			.collect();
 
-	println!(
-		"╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝"
-	);
+		let mut pass1_table = Table::new(pass1_rows);
+		pass1_table
+			.with(Style::modern())
+			.with(Modify::new(Rows::first()).with(Alignment::center()))
+			.with(Width::wrap(120));
+
+		println!("{}", pass1_table);
+		println!(
+			"Pass 1 TOTAL matches: {}, score: {:.1}\n",
+			report.pass1.total_matches, report.pass1.total_score
+		);
+
+		// Pass 2 details table (if present)
+		if let Some(ref p2) = report.pass2 {
+			println!("Pass 2 — weighted_words ({} entries)", p2.lexicon_size);
+			let pass2_rows: Vec<DebugMatchRow> = p2
+				.matches
+				.iter()
+				.map(|m| DebugMatchRow {
+					word: truncate_word(&m.word, 30),
+					count: m.count,
+					weight: format!("{:.1}", m.weight),
+					subtotal: format!("{:.1}", m.subtotal),
+					match_type: m.match_type.clone(),
+				})
+				.collect();
+
+			let mut pass2_table = Table::new(pass2_rows);
+			pass2_table
+				.with(Style::modern())
+				.with(Modify::new(Rows::first()).with(Alignment::center()))
+				.with(Width::wrap(120));
+
+			println!("{}", pass2_table);
+			println!(
+				"Pass 2 TOTAL matches: {}, score: {:.1}\n",
+				p2.total_matches, p2.total_score
+			);
+		}
+	}
+}
+
+fn truncate_word(s: &str, max: usize) -> String {
+	if s.chars().count() <= max {
+		s.to_string()
+	} else {
+		let truncated: String = s.chars().take(max - 1).collect();
+		format!("{}…", truncated)
+	}
+}
+
+fn bcp47_display(bcp47: &Option<String>) -> &str {
+	match bcp47 {
+		Some(s) => s.as_str(),
+		None => "-",
+	}
 }
 
 fn truncate(s: &str, max: usize) -> String {
@@ -139,7 +311,8 @@ fn render_json(file_path: &str, scores: &[LanguageScore]) {
 			}
 		);
 		println!("    \"matched_words\": {},", w.matched_words);
-		println!("    \"confidence\": {:.4}", w.confidence / 100.0);
+		println!("    \"confidence\": {:.4},", w.confidence / 100.0);
+		println!("    \"weighted_score\": {:.4}", w.weighted_score);
 		println!("  }},");
 	} else {
 		println!("  \"detected\": null,");
@@ -162,7 +335,8 @@ fn render_json(file_path: &str, scores: &[LanguageScore]) {
 		);
 		println!("      \"matched_words\": {},", s.matched_words);
 		println!("      \"total_words\": {},", s.total_words);
-		println!("      \"confidence\": {:.4}", s.confidence / 100.0);
+		println!("      \"confidence\": {:.4},", s.confidence / 100.0);
+		println!("      \"weighted_score\": {:.4}", s.weighted_score);
 		println!("    }}{}", comma);
 	}
 	println!("  ]");
@@ -188,10 +362,12 @@ fn json_escape(s: &str) -> String {
 }
 
 fn render_csv(scores: &[LanguageScore]) {
-	println!("rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence");
+	println!(
+		"rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence,weighted_score"
+	);
 	for (i, s) in scores.iter().enumerate() {
 		println!(
-			"{},{},{},{},{},{},{},{:.4}",
+			"{},{},{},{},{},{},{},{:.4},{:.4}",
 			i + 1,
 			csv_escape(&s.english_name),
 			csv_escape(&s.iso_639_1),
@@ -200,6 +376,7 @@ fn render_csv(scores: &[LanguageScore]) {
 			s.matched_words,
 			s.total_words,
 			s.confidence / 100.0,
+			s.weighted_score,
 		);
 	}
 }

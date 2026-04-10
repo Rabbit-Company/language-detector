@@ -128,5 +128,6 @@ pub fn language() -> Language {
 			"ieħor",
 			"l-istess",
 		],
+		weighted_words: &[],
 	}
 }

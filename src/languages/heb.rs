@@ -121,5 +121,6 @@ pub fn language() -> Language {
 			"כל",
 			"אחד",
 		],
+		weighted_words: &[],
 	}
 }

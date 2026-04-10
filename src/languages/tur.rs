@@ -107,5 +107,6 @@ pub fn language() -> Language {
 			"güle güle",
 			"hoşça kal",
 		],
+		weighted_words: &[],
 	}
 }

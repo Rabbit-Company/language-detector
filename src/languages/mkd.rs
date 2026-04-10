@@ -152,5 +152,6 @@ pub fn language() -> Language {
 			"малку",
 			"сите",
 		],
+		weighted_words: &[],
 	}
 }

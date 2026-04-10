@@ -132,5 +132,6 @@ pub fn language() -> Language {
 			"leor",
 			"beagán",
 		],
+		weighted_words: &[],
 	}
 }

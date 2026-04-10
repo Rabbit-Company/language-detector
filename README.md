@@ -9,7 +9,7 @@ The project supports **80 languages** and can output results as a human-readable
 ## Features
 
 - Detects the most likely language from subtitle files
-- Supports **80 built-in languages**
+- Supports **80 built-in languages**, including regional variants
 - Works with common subtitle and plain-text formats:
   - `.srt`
   - `.ass`
@@ -20,13 +20,17 @@ The project supports **80 languages** and can output results as a human-readable
 - Handles:
   - SRT sequence numbers and timestamps
   - SSA/ASS dialogue lines and metadata
-  - SSA/ASS override tags like `{"..."}`
+  - SSA/ASS override tags like `{"…"}`
   - HTML-like tags such as `<i>` and `<font>`
+- **Two‑pass detection**:
+  - Pass 1 – language identification using shared common words
+  - Pass 2 – variant disambiguation using weighted dialect‑specific markers
 - Multithreaded scanning across all supported languages
 - Multiple output formats:
   - `table`
   - `json`
   - `csv`
+- **Debug mode** to inspect exactly which words contributed to a language’s score
 
 ## Installation
 
@@ -59,9 +63,10 @@ The detector follows a simple pipeline:
 3. **Tokenize the remaining text**
    - whitespace-based tokenization for space-delimited languages
    - character and bigram tokenization for scripts that usually do not separate words with spaces
-4. **Compare tokens against built-in language lexicons**
-5. **Score every language** by number of matches
-6. **Return ranked results** with the top match shown as the detected language
+4. **Two‑pass scoring**
+   - **Pass 1** compares tokens against shared common_words for every language. This identifies the broad language family (e.g., Spanish, Portuguese, Chinese).
+   - **Pass 2** re‑ranks language variants (e.g., es-419 vs es-ES) using weighted_words—dialect‑specific spelling, grammar, and vocabulary that carry a higher score.
+5. **Return ranked results** with the top match shown as the detected language
 
 ## Project structure
 
@@ -86,6 +91,8 @@ language-detector [OPTIONS] <FILE>
 ### Options
 
 - `-f, --format <FORMAT>` — output format: `table`, `json`, or `csv`
+- `-d, --debug <LANG>` — debug mode: show detailed match info for a language (accepts name, ISO code, or BCP 47 tag)
+- `-V, --version` — print version information
 - `-h, --help` — show help
 
 ## Examples
@@ -119,35 +126,41 @@ language-detector -f json movie.srt > result.json
 ### Table
 
 ```text
-╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗
-║                                 Language Detection Results                                           ║
-╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
-║  File: sub_spa.ass                                                                                   ║
-║  Total words parsed: 2551                                                                            ║
-╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
-║                                                                                                      ║
-║  ✓ DETECTED LANGUAGE: Spanish (Latin America)                                                        ║
-║    ISO 639-1: es                                                                                     ║
-║    ISO 639-2: spa                                                                                    ║
-║    BCP 47:    es-419                                                                                 ║
-║    Confidence: 40.73%  (1039 / 2551 words matched)                                                   ║
-║                                                                                                      ║
-╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
-║  All language scores (top 10):                                                                       ║
-╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
-║  #   Language                     639-1   639-2   BCP 47         Matches      Score                  ║
-║  --- ---------------------------- ------- ------- -------------- ------------ ------------           ║
-║  1   Spanish (Latin America)      es      spa     es-419         1039         40.73%                 ║
-║  2   Spanish (Spain)              es      spa     es-ES          1035         40.57%                 ║
-║  3   Catalan                      ca      cat     -              537          21.05%                 ║
-║  4   Galician                     gl      glg     -              533          20.89%                 ║
-║  5   Portuguese (Portugal)        pt      por     pt-PT          474          18.58%                 ║
-║  6   Portuguese (Brazil)          pt      por     pt-BR          465          18.23%                 ║
-║  7   French                       fr      fra     -              436          17.09%                 ║
-║  8   Italian                      it      ita     -              400          15.68%                 ║
-║  9   Romanian                     ro      ron     -              289          11.33%                 ║
-║  10  Hungarian                    hu      hun     -              202          7.92%                  ║
-╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+┌────────────────────────────────────────────────┬────────────────────┐
+│                      File                      │ Total words parsed │
+├────────────────────────────────────────────────┼────────────────────┤
+│ sub_spa.ass                                    │ 2124               │
+└────────────────────────────────────────────────┴────────────────────┘
+
+┌─────────────────────────┬───────────┬───────────┬────────┬─────────────────────┬────────────────┐
+│    Detected language    │ ISO 639-1 │ ISO 639-2 │ BCP 47 │     Confidence      │ Weighted score │
+├─────────────────────────┼───────────┼───────────┼────────┼─────────────────────┼────────────────┤
+│ Spanish (Latin America) │ es        │ spa       │ es-419 │ 43.69% (928 / 2124) │ 31.00          │
+└─────────────────────────┴───────────┴───────────┴────────┴─────────────────────┴────────────────┘
+
+┌────┬─────────────────────────┬───────┬───────┬────────┬─────────┬────────────┬──────────┐
+│ #  │        Language         │ 639-1 │ 639-2 │ BCP 47 │ Matches │ Confidence │ Weighted │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 1  │ Spanish (Latin America) │ es    │ spa   │ es-419 │ 928     │ 43.69%     │ 31.00    │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 2  │ Spanish (Spain)         │ es    │ spa   │ es-ES  │ 928     │ 43.69%     │ 5.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 3  │ Catalan                 │ ca    │ cat   │ -      │ 507     │ 23.87%     │ 0.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 4  │ Galician                │ gl    │ glg   │ -      │ 469     │ 22.08%     │ 0.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 5  │ Portuguese (Portugal)   │ pt    │ por   │ pt-PT  │ 414     │ 19.49%     │ 140.00   │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 6  │ Portuguese (Brazil)     │ pt    │ por   │ pt-BR  │ 414     │ 19.49%     │ 45.00    │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 7  │ French                  │ fr    │ fra   │ -      │ 383     │ 18.03%     │ 0.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 8  │ Italian                 │ it    │ ita   │ -      │ 323     │ 15.21%     │ 0.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 9  │ Romanian                │ ro    │ ron   │ -      │ 259     │ 12.19%     │ 0.00     │
+├────┼─────────────────────────┼───────┼───────┼────────┼─────────┼────────────┼──────────┤
+│ 10 │ Hungarian               │ hu    │ hun   │ -      │ 176     │ 8.29%      │ 0.00     │
+└────┴─────────────────────────┴───────┴───────┴────────┴─────────┴────────────┴──────────┘
 ```
 
 ### JSON
@@ -155,14 +168,15 @@ language-detector -f json movie.srt > result.json
 ```json
 {
 	"file": "sub_spa.ass",
-	"total_words": 2551,
+	"total_words": 2124,
 	"detected": {
 		"language": "Spanish (Latin America)",
 		"iso_639_1": "es",
 		"iso_639_2": "spa",
 		"bcp47": "es-419",
-		"matched_words": 1039,
-		"confidence": 0.4073
+		"matched_words": 928,
+		"confidence": 0.4369,
+		"weighted_score": 31.0
 	},
 	"scores": [
 		{
@@ -171,9 +185,10 @@ language-detector -f json movie.srt > result.json
 			"iso_639_1": "es",
 			"iso_639_2": "spa",
 			"bcp47": "es-419",
-			"matched_words": 1039,
-			"total_words": 2551,
-			"confidence": 0.4073
+			"matched_words": 928,
+			"total_words": 2124,
+			"confidence": 0.4369,
+			"weighted_score": 31.0
 		},
 		{
 			"rank": 2,
@@ -181,9 +196,10 @@ language-detector -f json movie.srt > result.json
 			"iso_639_1": "es",
 			"iso_639_2": "spa",
 			"bcp47": "es-ES",
-			"matched_words": 1035,
-			"total_words": 2551,
-			"confidence": 0.4057
+			"matched_words": 928,
+			"total_words": 2124,
+			"confidence": 0.4369,
+			"weighted_score": 5.0
 		},
 		{
 			"rank": 3,
@@ -191,9 +207,10 @@ language-detector -f json movie.srt > result.json
 			"iso_639_1": "ca",
 			"iso_639_2": "cat",
 			"bcp47": null,
-			"matched_words": 537,
-			"total_words": 2551,
-			"confidence": 0.2105
+			"matched_words": 507,
+			"total_words": 2124,
+			"confidence": 0.2387,
+			"weighted_score": 0.0
 		}
 	]
 }
@@ -202,10 +219,10 @@ language-detector -f json movie.srt > result.json
 ### CSV
 
 ```csv
-rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence
-1,Spanish (Latin America),es,spa,es-419,1039,2551,0.4073
-2,Spanish (Spain),es,spa,es-ES,1035,2551,0.4057
-3,Catalan,ca,cat,-,537,2551,0.2105
+rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence,weighted_score
+1,Spanish (Latin America),es,spa,es-419,928,2124,0.4369,31.0000
+2,Spanish (Spain),es,spa,es-ES,928,2124,0.4369,5.0000
+3,Catalan,ca,cat,-,507,2124,0.2387,0.0000
 ```
 
 ## Detection strategy
@@ -219,12 +236,18 @@ That gives it a few advantages:
 - easy to inspect and extend
 - predictable output
 
-It also means performance depends heavily on:
+## Two‑pass scoring
 
-- subtitle quality
-- how much spoken text is available
-- overlap between related languages
-- the quality and coverage of each language word list
+The detector performs two passes over the tokenized text:
+
+1. **Language identification** – every language is scored using its `common_words` (function words and high‑frequency neutral vocabulary). This groups related languages together.
+2. **Variant disambiguation** – for languages that share the same ISO 639‑2 code (e.g., `spa`, `por`, `zho`), a second pass uses `weighted_words`. These are dialect‑specific spelling patterns, conjugations, and vocabulary that are strong signals for one variant over another.
+
+The `Weighted score` column in the output shows the total from Pass 2. When two variants have identical Pass 1 match counts, the one with the higher weighted score is ranked higher.
+
+## Debug mode
+
+Use `--debug <LANG>` to see exactly which tokens matched `common_words` and `weighted_words`, along with their hit counts and contributions. This is invaluable for tuning word lists and understanding why a language scored the way it did.
 
 ## Limitations
 
@@ -247,10 +270,11 @@ To add or improve a language:
    - English name
    - ISO 639-1 code
    - ISO 639-2 code
-   - a representative common-word list
-3. Register the language in the `languages/mod.rs`
+   - a `common_words` list (shared, neutral vocabulary)
+   - a `weighted_words` list (dialect‑specific markers, if a variant)
+3. Register the language in `languages/mod.rs`
 
-The better the common-word list, the better the detector tends to perform.
+The better the word lists, the better the detector performs.
 
 ## Exit behavior
 

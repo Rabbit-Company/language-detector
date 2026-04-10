@@ -142,5 +142,6 @@ pub fn language() -> Language {
 			"atâția",
 			"atâtea",
 		],
+		weighted_words: &[],
 	}
 }

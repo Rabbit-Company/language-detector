@@ -154,5 +154,6 @@ pub fn language() -> Language {
 			"htjeti",
 			"moći",
 		],
+		weighted_words: &[],
 	}
 }

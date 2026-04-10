@@ -127,5 +127,6 @@ pub fn language() -> Language {
 			"bakoitza",
 			"batzuk",
 		],
+		weighted_words: &[],
 	}
 }

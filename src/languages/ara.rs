@@ -142,5 +142,6 @@ pub fn language() -> Language {
 			"لما",
 			"لن",
 		],
+		weighted_words: &[],
 	}
 }

@@ -124,5 +124,6 @@ pub fn language() -> Language {
 			"kalz",
 			"nebeut",
 		],
+		weighted_words: &[],
 	}
 }

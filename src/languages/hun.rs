@@ -130,5 +130,6 @@ pub fn language() -> Language {
 			"függetlenül",
 			"tekintet nélkül",
 		],
+		weighted_words: &[],
 	}
 }

@@ -149,5 +149,6 @@ pub fn language() -> Language {
 			"सुत्छ",
 			"सुत्छन्",
 		],
+		weighted_words: &[],
 	}
 }

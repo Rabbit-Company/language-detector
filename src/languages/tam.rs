@@ -123,5 +123,6 @@ pub fn language() -> Language {
 			"ஒவ்வொரு",
 			"ஒன்று",
 		],
+		weighted_words: &[],
 	}
 }

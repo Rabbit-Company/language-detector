@@ -147,5 +147,6 @@ pub fn language() -> Language {
 			"някои",
 			"никой",
 		],
+		weighted_words: &[],
 	}
 }

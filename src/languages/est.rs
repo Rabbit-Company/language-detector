@@ -22,5 +22,6 @@ pub fn language() -> Language {
 			"tead", "teab", "teame", "teate", "teavad", "uskuma", "uskuda", "usun", "usud", "usub",
 			"usume", "usute", "usuvad", "mõtlema",
 		],
+		weighted_words: &[],
 	}
 }

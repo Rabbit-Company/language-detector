@@ -142,5 +142,6 @@ pub fn language() -> Language {
 			"lixeiro",
 			"rápido",
 		],
+		weighted_words: &[],
 	}
 }

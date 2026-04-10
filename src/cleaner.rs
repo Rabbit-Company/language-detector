@@ -45,7 +45,11 @@ pub fn clean_subtitle_text(raw: &str) -> String {
 				// Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,Actual text
 				if let Some(pos) = trimmed.rfind(",,") {
 					let text_part = &trimmed[pos + 2..];
-					out.push_str(text_part);
+					let text_part = text_part
+						.replace("\\N", " ")
+						.replace("\\n", " ")
+						.replace("\\h", " ");
+					out.push_str(&text_part);
 					out.push(' ');
 				}
 			}

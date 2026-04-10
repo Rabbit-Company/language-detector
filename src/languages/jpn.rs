@@ -126,5 +126,6 @@ pub fn language() -> Language {
 			"習う",
 			"勉強する",
 		],
+		weighted_words: &[],
 	}
 }

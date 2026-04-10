@@ -126,5 +126,6 @@ pub fn language() -> Language {
 			"যাবেন",
 			"যাব",
 		],
+		weighted_words: &[],
 	}
 }

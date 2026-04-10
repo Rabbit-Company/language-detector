@@ -138,5 +138,6 @@ pub fn language() -> Language {
 			"κοντά",
 			"μακριά",
 		],
+		weighted_words: &[],
 	}
 }

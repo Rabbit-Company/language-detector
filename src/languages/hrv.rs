@@ -157,5 +157,6 @@ pub fn language() -> Language {
 			"doći",
 			"uzeti",
 		],
+		weighted_words: &[],
 	}
 }

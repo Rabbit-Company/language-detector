@@ -119,5 +119,6 @@ pub fn language() -> Language {
 			"wegens",
 			"tijdens",
 		],
+		weighted_words: &[],
 	}
 }

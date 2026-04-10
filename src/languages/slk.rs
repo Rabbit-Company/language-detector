@@ -141,5 +141,6 @@ pub fn language() -> Language {
 			"pravdaže",
 			"samozrejme",
 		],
+		weighted_words: &[],
 	}
 }

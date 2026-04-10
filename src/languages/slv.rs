@@ -15,5 +15,6 @@ pub fn language() -> Language {
 			"bile", "bom", "moram", "nisem", "nisi", "ste", "hočem", "mora", "tukaj", "tam", "zdaj",
 			"potem", "vem", "mislim", "prosim", "hvala", "dobro", "ja", "nič",
 		],
+		weighted_words: &[],
 	}
 }

@@ -116,5 +116,6 @@ pub fn language() -> Language {
 			"പതുക്കെ",
 			"കൂടുതൽ",
 		],
+		weighted_words: &[],
 	}
 }

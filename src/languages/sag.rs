@@ -92,5 +92,6 @@ pub fn language() -> Language {
 			"taâ",
 			"mvene",
 		],
+		weighted_words: &[],
 	}
 }

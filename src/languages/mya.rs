@@ -120,5 +120,6 @@ pub fn language() -> Language {
 			"နည်း",
 			"အားလုံး",
 		],
+		weighted_words: &[],
 	}
 }

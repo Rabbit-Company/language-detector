@@ -117,5 +117,6 @@ pub fn language() -> Language {
 			"potkaista",
 			"heittää",
 		],
+		weighted_words: &[],
 	}
 }

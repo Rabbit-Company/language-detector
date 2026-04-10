@@ -121,5 +121,6 @@ pub fn language() -> Language {
 			"වේගවත්",
 			"හෙමින්",
 		],
+		weighted_words: &[],
 	}
 }

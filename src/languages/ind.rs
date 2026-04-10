@@ -132,5 +132,6 @@ pub fn language() -> Language {
 			"tua",
 			"muda",
 		],
+		weighted_words: &[],
 	}
 }

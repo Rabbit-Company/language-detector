@@ -112,5 +112,6 @@ pub fn language() -> Language {
 			"안녕하다",
 			"중요하다",
 		],
+		weighted_words: &[],
 	}
 }

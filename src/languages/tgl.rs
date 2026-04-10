@@ -135,5 +135,6 @@ pub fn language() -> Language {
 			"mababa",
 			"malayo",
 		],
+		weighted_words: &[],
 	}
 }

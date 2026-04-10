@@ -127,5 +127,6 @@ pub fn language() -> Language {
 			"produire",
 			"réduire",
 		],
+		weighted_words: &[],
 	}
 }

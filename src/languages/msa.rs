@@ -124,5 +124,6 @@ pub fn language() -> Language {
 			"salah",
 			"tepat",
 		],
+		weighted_words: &[],
 	}
 }

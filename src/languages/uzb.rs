@@ -127,5 +127,6 @@ pub fn language() -> Language {
 			"ҳеч",
 			"нарса",
 		],
+		weighted_words: &[],
 	}
 }

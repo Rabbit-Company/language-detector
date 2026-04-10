@@ -132,5 +132,6 @@ pub fn language() -> Language {
 			"freqüentment",
 			"completament",
 		],
+		weighted_words: &[],
 	}
 }

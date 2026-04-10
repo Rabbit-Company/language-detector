@@ -122,5 +122,6 @@ pub fn language() -> Language {
 			"ಪ್ರತಿ",
 			"ಒಂದು",
 		],
+		weighted_words: &[],
 	}
 }

@@ -7,9 +7,12 @@ use output::OutputFormat;
 use std::env;
 use std::fs;
 
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 struct CliArgs {
 	file_path: String,
 	format: OutputFormat,
+	debug_lang: Option<String>,
 }
 
 fn print_usage(program: &str) {
@@ -23,6 +26,10 @@ fn print_usage(program: &str) {
 	eprintln!();
 	eprintln!("OPTIONS:");
 	eprintln!("    -f, --format <FORMAT>    Output format: table (default), json, csv");
+	eprintln!("    -d, --debug <LANG>       Debug mode: show detailed match info for a language");
+	eprintln!("                             Accepts language name, ISO 639-1/2 code, or BCP 47 tag");
+	eprintln!("                             Examples: spa, es-419, \"Spanish\", por, pt-BR");
+	eprintln!("    -V, --version            Print version information");
 	eprintln!("    -h, --help               Show this help message");
 	eprintln!();
 	eprintln!("EXAMPLES:");
@@ -38,6 +45,7 @@ fn parse_args() -> CliArgs {
 
 	let mut format = OutputFormat::Table;
 	let mut file_path: Option<String> = None;
+	let mut debug_lang: Option<String> = None;
 
 	let mut i = 1;
 	while i < args.len() {
@@ -62,6 +70,18 @@ fn parse_args() -> CliArgs {
 						std::process::exit(1);
 					}
 				}
+			}
+			"-d" | "--debug" => {
+				i += 1;
+				if i >= args.len() {
+					eprintln!("Error: --debug requires a language name, ISO code, or BCP 47 tag");
+					std::process::exit(1);
+				}
+				debug_lang = Some(args[i].clone());
+			}
+			"-V" | "--version" => {
+				println!("Language Detector v{}", VERSION);
+				std::process::exit(0);
 			}
 			other => {
 				if other.starts_with('-') {
@@ -88,7 +108,11 @@ fn parse_args() -> CliArgs {
 		}
 	};
 
-	CliArgs { file_path, format }
+	CliArgs {
+		file_path,
+		format,
+		debug_lang,
+	}
 }
 
 fn main() {
@@ -112,10 +136,16 @@ fn main() {
 		std::process::exit(1);
 	}
 
-	// Scan all languages (multithreaded)
 	let catalogue = languages::build_catalogue();
-	let scores = scanner::scan(catalogue, words);
 
-	// Render in requested format
+	// Debug mode: show detailed match info and exit
+	if let Some(ref filter) = cli.debug_lang {
+		let reports = scanner::debug_languages(&catalogue, &words, filter);
+		output::render_debug(&reports);
+		return;
+	}
+
+	// Normal mode: scan all languages and render
+	let scores = scanner::scan(catalogue, words);
 	output::render(cli.format, &cli.file_path, &scores);
 }

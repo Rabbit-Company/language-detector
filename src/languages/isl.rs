@@ -123,5 +123,6 @@ pub fn language() -> Language {
 			"alltof",
 			"of mikið",
 		],
+		weighted_words: &[],
 	}
 }

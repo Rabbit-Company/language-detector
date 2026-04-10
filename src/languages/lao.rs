@@ -116,5 +116,6 @@ pub fn language() -> Language {
 			"ຫຼາຍ",
 			"ໜ້ອຍ",
 		],
+		weighted_words: &[],
 	}
 }

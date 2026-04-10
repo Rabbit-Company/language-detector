@@ -92,6 +92,16 @@ pub struct Language {
 	pub iso_639_2: &'static str,
 	pub bcp47: Option<&'static str>,
 	pub common_words: &'static [&'static str],
+	/// Optional weighted words for distinguishing closely related variants.
+	///
+	/// Each entry is a `(word, weight)` pair. During scanning, a match on a
+	/// weighted word adds its weight to the language score instead of the
+	/// default 1.0. This lets high-signal markers (e.g. vosotros conjugations
+	/// for Peninsular Spanish) have a bigger impact on ranking than ordinary
+	/// shared vocabulary.
+	///
+	/// Languages that don't need weighted disambiguation can leave this as `&[]`.
+	pub weighted_words: &'static [(&'static str, f64)],
 }
 
 /// Collect every registered language into a single Vec.
