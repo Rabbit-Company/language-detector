@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Uzbek",
 		iso_639_1: "uz",
 		iso_639_2: "uzb",
+		bcp47: None,
 		common_words: &[
 			"ва",
 			"да",

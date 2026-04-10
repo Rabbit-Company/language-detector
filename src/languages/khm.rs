@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Khmer",
 		iso_639_1: "km",
 		iso_639_2: "khm",
+		bcp47: None,
 		common_words: &[
 			"និង",
 			"មិន",

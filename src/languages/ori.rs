@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Odia",
 		iso_639_1: "or",
 		iso_639_2: "ori",
+		bcp47: None,
 		common_words: &[
 			"ଏବଂ",
 			"ନୁହେଁ",

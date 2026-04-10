@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Hindi",
 		iso_639_1: "hi",
 		iso_639_2: "hin",
+		bcp47: None,
 		common_words: &[
 			"की",
 			"और",

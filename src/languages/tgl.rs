@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Tagalog",
 		iso_639_1: "tl",
 		iso_639_2: "tgl",
+		bcp47: None,
 		common_words: &[
 			"ang",
 			"ng",

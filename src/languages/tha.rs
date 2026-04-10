@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Thai",
 		iso_639_1: "th",
 		iso_639_2: "tha",
+		bcp47: None,
 		common_words: &[
 			"ที่",
 			"เป็น",

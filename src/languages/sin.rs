@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Sinhala",
 		iso_639_1: "si",
 		iso_639_2: "sin",
+		bcp47: None,
 		common_words: &[
 			"සහ",
 			"නොවේ",

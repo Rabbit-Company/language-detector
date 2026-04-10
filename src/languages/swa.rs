@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Swahili",
 		iso_639_1: "sw",
 		iso_639_2: "swa",
+		bcp47: None,
 		common_words: &[
 			"na", "ya", "wa", "za", "cha", "vya", "la", "pa", "kwa", "ni", "si", "mimi", "wewe", "yeye",
 			"sisi", "nyinyi", "wao", "hii", "hiyo", "ile", "hapa", "hapo", "pale", "wapi", "lini",

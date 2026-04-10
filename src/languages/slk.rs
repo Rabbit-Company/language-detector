@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Slovak",
 		iso_639_1: "sk",
 		iso_639_2: "slk",
+		bcp47: None,
 		common_words: &[
 			"a",
 			"v",

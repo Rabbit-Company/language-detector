@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Kannada",
 		iso_639_1: "kn",
 		iso_639_2: "kan",
+		bcp47: None,
 		common_words: &[
 			"ಮತ್ತು",
 			"ಅಲ್ಲ",

@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Persian",
 		iso_639_1: "fa",
 		iso_639_2: "fas",
+		bcp47: None,
 		common_words: &[
 			"و",
 			"در",

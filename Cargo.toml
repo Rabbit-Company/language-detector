@@ -1,7 +1,10 @@
 [package]
 name = "language-detector"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2024"
 description = "Detect file language using common word frequency analysis with multithreading"
 
 [dependencies]
+
+[profile.release]
+opt-level = 3

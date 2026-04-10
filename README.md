@@ -119,34 +119,35 @@ language-detector -f json movie.srt > result.json
 ### Table
 
 ```text
-╔══════════════════════════════════════════════════════════════════╗
-║                   Language Detection Results                     ║
-╠══════════════════════════════════════════════════════════════════╣
-║  File: sub_spa.ass                                               ║
-║  Total words parsed: 2551                                        ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  ✓ DETECTED LANGUAGE: Spanish                                    ║
-║    ISO 639-1: es                                                 ║
-║    ISO 639-2: spa                                                ║
-║    Confidence: 40.57%  (1035 / 2551 words matched)               ║
-║                                                                  ║
-╠══════════════════════════════════════════════════════════════════╣
-║  All language scores (top 10):                                   ║
-╠══════════════════════════════════════════════════════════════════╣
-║  #   Language       639-1   639-2   Matches   Score              ║
-║  --- -------------- ------- ------- --------- ---------------    ║
-║  1   Spanish        es      spa     1035      40.57%             ║
-║  2   Catalan        ca      cat     537       21.05%             ║
-║  3   Galician       gl      glg     533       20.89%             ║
-║  4   Portuguese     pt      por     457       17.91%             ║
-║  5   French         fr      fra     436       17.09%             ║
-║  6   Italian        it      ita     400       15.68%             ║
-║  7   Romanian       ro      ron     289       11.33%             ║
-║  8   Hungarian      hu      hun     202       7.92%              ║
-║  9   Breton         br      bre     190       7.45%              ║
-║  10  Dutch          nl      nld     166       6.51%              ║
-╚══════════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                 Language Detection Results                                           ║
+╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║  File: sub_spa.ass                                                                                   ║
+║  Total words parsed: 2551                                                                            ║
+╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                                      ║
+║  ✓ DETECTED LANGUAGE: Spanish (Latin America)                                                        ║
+║    ISO 639-1: es                                                                                     ║
+║    ISO 639-2: spa                                                                                    ║
+║    BCP 47:    es-419                                                                                 ║
+║    Confidence: 40.73%  (1039 / 2551 words matched)                                                   ║
+║                                                                                                      ║
+╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║  All language scores (top 10):                                                                       ║
+╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║  #   Language                     639-1   639-2   BCP 47         Matches      Score                  ║
+║  --- ---------------------------- ------- ------- -------------- ------------ ------------           ║
+║  1   Spanish (Latin America)      es      spa     es-419         1039         40.73%                 ║
+║  2   Spanish (Spain)              es      spa     es-ES          1035         40.57%                 ║
+║  3   Catalan                      ca      cat     -              537          21.05%                 ║
+║  4   Galician                     gl      glg     -              533          20.89%                 ║
+║  5   Portuguese (Portugal)        pt      por     pt-PT          474          18.58%                 ║
+║  6   Portuguese (Brazil)          pt      por     pt-BR          465          18.23%                 ║
+║  7   French                       fr      fra     -              436          17.09%                 ║
+║  8   Italian                      it      ita     -              400          15.68%                 ║
+║  9   Romanian                     ro      ron     -              289          11.33%                 ║
+║  10  Hungarian                    hu      hun     -              202          7.92%                  ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
 ### JSON
@@ -156,39 +157,43 @@ language-detector -f json movie.srt > result.json
 	"file": "sub_spa.ass",
 	"total_words": 2551,
 	"detected": {
-		"language": "Spanish",
+		"language": "Spanish (Latin America)",
 		"iso_639_1": "es",
 		"iso_639_2": "spa",
-		"matched_words": 1035,
-		"confidence": 0.4057
+		"bcp47": "es-419",
+		"matched_words": 1039,
+		"confidence": 0.4073
 	},
 	"scores": [
 		{
 			"rank": 1,
-			"language": "Spanish",
+			"language": "Spanish (Latin America)",
 			"iso_639_1": "es",
 			"iso_639_2": "spa",
+			"bcp47": "es-419",
+			"matched_words": 1039,
+			"total_words": 2551,
+			"confidence": 0.4073
+		},
+		{
+			"rank": 2,
+			"language": "Spanish (Spain)",
+			"iso_639_1": "es",
+			"iso_639_2": "spa",
+			"bcp47": "es-ES",
 			"matched_words": 1035,
 			"total_words": 2551,
 			"confidence": 0.4057
 		},
 		{
-			"rank": 2,
+			"rank": 3,
 			"language": "Catalan",
 			"iso_639_1": "ca",
 			"iso_639_2": "cat",
+			"bcp47": null,
 			"matched_words": 537,
 			"total_words": 2551,
 			"confidence": 0.2105
-		},
-		{
-			"rank": 3,
-			"language": "Galician",
-			"iso_639_1": "gl",
-			"iso_639_2": "glg",
-			"matched_words": 533,
-			"total_words": 2551,
-			"confidence": 0.2089
 		}
 	]
 }
@@ -197,10 +202,10 @@ language-detector -f json movie.srt > result.json
 ### CSV
 
 ```csv
-rank,language,iso_639_1,iso_639_2,matched_words,total_words,confidence
-1,Spanish,es,spa,1035,2551,0.4057
-2,Catalan,ca,cat,537,2551,0.2105
-3,Galician,gl,glg,533,2551,0.2089
+rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence
+1,Spanish (Latin America),es,spa,es-419,1039,2551,0.4073
+2,Spanish (Spain),es,spa,es-ES,1035,2551,0.4057
+3,Catalan,ca,cat,-,537,2551,0.2105
 ```
 
 ## Detection strategy

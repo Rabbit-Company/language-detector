@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Estonian",
 		iso_639_1: "et",
 		iso_639_2: "est",
+		bcp47: None,
 		common_words: &[
 			"ja", "on", "ei", "see", "ma", "sa", "ta", "me", "te", "nad", "mina", "sina", "tema", "meie",
 			"teie", "nemad", "olema", "ole", "olen", "oled", "on", "oleme", "olete", "on", "ei ole",

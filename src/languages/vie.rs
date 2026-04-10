@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Vietnamese",
 		iso_639_1: "vi",
 		iso_639_2: "vie",
+		bcp47: None,
 		common_words: &[
 			"và", "của", "có", "không", "là", "được", "trong", "một", "cho", "với", "những", "các", "đã",
 			"tôi", "anh", "chị", "em", "nó", "chúng", "ta", "bạn", "họ", "ông", "bà", "cô", "chú", "bác",

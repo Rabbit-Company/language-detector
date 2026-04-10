@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Japanese",
 		iso_639_1: "ja",
 		iso_639_2: "jpn",
+		bcp47: None,
 		common_words: &[
 			"の",
 			"に",

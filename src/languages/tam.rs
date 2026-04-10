@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Tamil",
 		iso_639_1: "ta",
 		iso_639_2: "tam",
+		bcp47: None,
 		common_words: &[
 			"மற்றும்",
 			"இல்லை",

@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Slovenian",
 		iso_639_1: "sl",
 		iso_639_2: "slv",
+		bcp47: None,
 		common_words: &[
 			"je", "sem", "si", "smo", "ste", "so", "in", "na", "za", "da", "ne", "se", "bi", "ga", "jo",
 			"jih", "mi", "me", "ti", "te", "to", "ta", "kaj", "ali", "ker", "ko", "po", "od", "do", "iz",

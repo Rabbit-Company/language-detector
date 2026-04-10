@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Norwegian",
 		iso_639_1: "no",
 		iso_639_2: "nor",
+		bcp47: None,
 		common_words: &[
 			"og", "i", "det", "på", "som", "er", "en", "til", "å", "han", "av", "for", "med", "at",
 			"var", "de", "ikke", "den", "har", "jeg", "om", "et", "men", "så", "seg", "hun", "hadde",

@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Korean",
 		iso_639_1: "ko",
 		iso_639_2: "kor",
+		bcp47: None,
 		common_words: &[
 			"있다",
 			"것",

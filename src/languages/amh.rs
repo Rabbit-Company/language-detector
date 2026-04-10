@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Amharic",
 		iso_639_1: "am",
 		iso_639_2: "amh",
+		bcp47: None,
 		common_words: &[
 			"እና",
 			"እንደ",

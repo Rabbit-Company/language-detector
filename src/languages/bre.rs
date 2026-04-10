@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Breton",
 		iso_639_1: "br",
 		iso_639_2: "bre",
+		bcp47: None,
 		common_words: &[
 			"ha",
 			"hag",

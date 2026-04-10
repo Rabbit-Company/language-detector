@@ -27,56 +27,85 @@ pub fn render(format: OutputFormat, file_path: &str, scores: &[LanguageScore]) {
 	}
 }
 
+fn bcp47_display(bcp47: &Option<String>) -> &str {
+	match bcp47 {
+		Some(s) => s.as_str(),
+		None => "-",
+	}
+}
+
 fn render_table(file_path: &str, scores: &[LanguageScore]) {
 	let total_words = scores.first().map_or(0, |s| s.total_words);
 
-	println!("╔══════════════════════════════════════════════════════════════════╗");
-	println!("║                   Language Detection Results                     ║");
-	println!("╠══════════════════════════════════════════════════════════════════╣");
-	println!("║  File: {:<56}  ║", truncate(file_path, 56));
-	println!("║  Total words parsed: {:<42}  ║", total_words);
-	println!("╠══════════════════════════════════════════════════════════════════╣");
+	println!(
+		"╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗"
+	);
+	println!(
+		"║                                 Language Detection Results                                           ║"
+	);
+	println!(
+		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
+	);
+	println!("║  File: {:<84}          ║", truncate(file_path, 84));
+	println!("║  Total words parsed: {:<70}          ║", total_words);
+	println!(
+		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
+	);
 
 	if let Some(w) = scores.first() {
-		println!("║                                                                  ║");
-		println!("║  ✓ DETECTED LANGUAGE: {:<42} ║", w.english_name);
-		println!("║    ISO 639-1: {:<50} ║", w.iso_639_1);
-		println!("║    ISO 639-2: {:<50} ║", w.iso_639_2);
 		println!(
-			"║    Confidence: {:<49} ║",
+			"║                                                                                                      ║"
+		);
+		println!("║  ✓ DETECTED LANGUAGE: {:<70}         ║", w.english_name);
+		println!("║    ISO 639-1: {:<78}         ║", w.iso_639_1);
+		println!("║    ISO 639-2: {:<78}         ║", w.iso_639_2);
+		println!("║    BCP 47:    {:<78}         ║", bcp47_display(&w.bcp47));
+		println!(
+			"║    Confidence: {:<77}         ║",
 			format!(
 				"{:.2}%  ({} / {} words matched)",
 				w.confidence, w.matched_words, w.total_words
 			)
 		);
-		println!("║                                                                  ║");
+		println!(
+			"║                                                                                                      ║"
+		);
 	}
 
-	println!("╠══════════════════════════════════════════════════════════════════╣");
-	println!("║  All language scores (top 10):                                   ║");
-	println!("╠══════════════════════════════════════════════════════════════════╣");
 	println!(
-		"║  {:<3} {:<14} {:<7} {:<7} {:<9} {:<15}    ║",
-		"#", "Language", "639-1", "639-2", "Matches", "Score"
+		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
 	);
 	println!(
-		"║  {:-<3} {:-<14} {:-<7} {:-<7} {:-<9} {:-<15}    ║",
-		"", "", "", "", "", ""
+		"║  All language scores (top 10):                                                                       ║"
+	);
+	println!(
+		"╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣"
+	);
+	println!(
+		"║  {:<3} {:<28} {:<7} {:<7} {:<14} {:<12} {:<12}           ║",
+		"#", "Language", "639-1", "639-2", "BCP 47", "Matches", "Score"
+	);
+	println!(
+		"║  {:-<3} {:-<28} {:-<7} {:-<7} {:-<14} {:-<12} {:-<12}           ║",
+		"", "", "", "", "", "", ""
 	);
 
 	for (i, s) in scores.iter().take(10).enumerate() {
 		println!(
-			"║  {:<3} {:<14} {:<7} {:<7} {:<9} {:<15}    ║",
+			"║  {:<3} {:<28} {:<7} {:<7} {:<14} {:<12} {:<12}           ║",
 			i + 1,
 			s.english_name,
 			s.iso_639_1,
 			s.iso_639_2,
+			bcp47_display(&s.bcp47),
 			s.matched_words,
 			format!("{:.2}%", s.confidence),
 		);
 	}
 
-	println!("╚══════════════════════════════════════════════════════════════════╝");
+	println!(
+		"╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝"
+	);
 }
 
 fn truncate(s: &str, max: usize) -> String {
@@ -102,6 +131,13 @@ fn render_json(file_path: &str, scores: &[LanguageScore]) {
 		println!("    \"language\": \"{}\",", json_escape(&w.english_name));
 		println!("    \"iso_639_1\": \"{}\",", json_escape(&w.iso_639_1));
 		println!("    \"iso_639_2\": \"{}\",", json_escape(&w.iso_639_2));
+		println!(
+			"    \"bcp47\": {},",
+			match &w.bcp47 {
+				Some(s) => format!("\"{}\"", json_escape(s)),
+				None => "null".to_string(),
+			}
+		);
 		println!("    \"matched_words\": {},", w.matched_words);
 		println!("    \"confidence\": {:.4}", w.confidence / 100.0);
 		println!("  }},");
@@ -117,6 +153,13 @@ fn render_json(file_path: &str, scores: &[LanguageScore]) {
 		println!("      \"language\": \"{}\",", json_escape(&s.english_name));
 		println!("      \"iso_639_1\": \"{}\",", json_escape(&s.iso_639_1));
 		println!("      \"iso_639_2\": \"{}\",", json_escape(&s.iso_639_2));
+		println!(
+			"      \"bcp47\": {},",
+			match &s.bcp47 {
+				Some(tag) => format!("\"{}\"", json_escape(tag)),
+				None => "null".to_string(),
+			}
+		);
 		println!("      \"matched_words\": {},", s.matched_words);
 		println!("      \"total_words\": {},", s.total_words);
 		println!("      \"confidence\": {:.4}", s.confidence / 100.0);
@@ -145,14 +188,15 @@ fn json_escape(s: &str) -> String {
 }
 
 fn render_csv(scores: &[LanguageScore]) {
-	println!("rank,language,iso_639_1,iso_639_2,matched_words,total_words,confidence");
+	println!("rank,language,iso_639_1,iso_639_2,bcp47,matched_words,total_words,confidence");
 	for (i, s) in scores.iter().enumerate() {
 		println!(
-			"{},{},{},{},{},{},{:.4}",
+			"{},{},{},{},{},{},{},{:.4}",
 			i + 1,
 			csv_escape(&s.english_name),
 			csv_escape(&s.iso_639_1),
 			csv_escape(&s.iso_639_2),
+			csv_escape(bcp47_display(&s.bcp47)),
 			s.matched_words,
 			s.total_words,
 			s.confidence / 100.0,

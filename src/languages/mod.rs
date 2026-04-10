@@ -13,7 +13,8 @@ mod cor;
 mod dan;
 mod deu;
 mod ell;
-mod eng;
+mod eng_gb;
+mod eng_us;
 mod est;
 mod eus;
 mod fas;
@@ -54,14 +55,16 @@ mod nor;
 mod ori;
 mod pan;
 mod pol;
-mod por;
+mod por_br;
+mod por_pt;
 mod ron;
 mod rus;
 mod sag;
 mod sin;
 mod slk;
 mod slv;
-mod spa;
+mod spa_419;
+mod spa_es;
 mod sqi;
 mod srp;
 mod swa;
@@ -77,7 +80,8 @@ mod urd;
 mod uzb;
 mod vie;
 mod wel;
-mod zho;
+mod zho_hans;
+mod zho_hant;
 
 /// A single language entry with its ISO codes and list of common stop-words
 /// used for frequency-based detection.
@@ -86,6 +90,7 @@ pub struct Language {
 	pub english_name: &'static str,
 	pub iso_639_1: &'static str,
 	pub iso_639_2: &'static str,
+	pub bcp47: Option<&'static str>,
 	pub common_words: &'static [&'static str],
 }
 
@@ -94,18 +99,26 @@ pub struct Language {
 /// To add a new language, create a file `src/languages/<iso639_2>.rs` that
 /// exports `pub fn language() -> Language { … }` and add the corresponding
 /// `mod` declaration above plus one line in the vec below.
+///
+/// To add a regional variant, create a file like `src/languages/<base>_<region>.rs`
+/// that exports `pub fn language() -> Language { … }` with a `bcp47` tag set
+/// (e.g. `"pt-BR"`). Register it in the vec below alongside the base language.
 pub fn build_catalogue() -> Vec<Language> {
 	vec![
-		eng::language(),
+		eng_us::language(),
+		eng_gb::language(),
 		slv::language(),
-		spa::language(),
+		spa_es::language(),
+		spa_419::language(),
 		fra::language(),
 		deu::language(),
 		ita::language(),
-		por::language(),
+		por_br::language(),
+		por_pt::language(),
 		jpn::language(),
 		kor::language(),
-		zho::language(),
+		zho_hans::language(),
+		zho_hant::language(),
 		rus::language(),
 		tur::language(),
 		pol::language(),

@@ -6,6 +6,7 @@ pub fn language() -> Language {
 		english_name: "Gujarati",
 		iso_639_1: "gu",
 		iso_639_2: "guj",
+		bcp47: None,
 		common_words: &[
 			"અને",
 			"નથી",
