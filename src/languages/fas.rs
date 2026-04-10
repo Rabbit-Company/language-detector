@@ -138,5 +138,6 @@ pub fn language() -> Language {
 			"آهسته",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

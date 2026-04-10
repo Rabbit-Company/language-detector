@@ -146,5 +146,6 @@ pub fn language() -> Language {
 			"знаєте",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

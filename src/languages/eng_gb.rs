@@ -10,6 +10,7 @@ pub fn language() -> Language {
 		iso_639_1: "en",
 		iso_639_2: "eng",
 		bcp47: Some("en-GB"),
+		disambiguation_group: Some("eng"),
 		common_words: &[
 			// Shared English function words and neutral vocabulary
 			"the", "a", "an", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had",

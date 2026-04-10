@@ -123,5 +123,6 @@ pub fn language() -> Language {
 			"ಒಂದು",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -139,5 +139,6 @@ pub fn language() -> Language {
 			"μακριά",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

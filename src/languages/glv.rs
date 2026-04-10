@@ -127,5 +127,6 @@ pub fn language() -> Language {
 			"dy",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

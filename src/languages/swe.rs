@@ -119,5 +119,6 @@ pub fn language() -> Language {
 			"flög",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

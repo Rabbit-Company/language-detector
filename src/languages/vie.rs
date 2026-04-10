@@ -20,5 +20,6 @@ pub fn language() -> Language {
 			"một", "số", "đôi", "chút",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

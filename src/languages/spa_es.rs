@@ -10,6 +10,7 @@ pub fn language() -> Language {
 		iso_639_1: "es",
 		iso_639_2: "spa",
 		bcp47: Some("es-ES"),
+		disambiguation_group: Some("spa"),
 		common_words: &[
 			// Shared Spanish common words – keep for language identification
 			"de", "la", "que", "el", "en", "y", "a", "los", "se", "del", "las", "un", "por", "con", "no",

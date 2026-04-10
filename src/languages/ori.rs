@@ -120,5 +120,6 @@ pub fn language() -> Language {
 			"ଶୀଘ୍ର",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

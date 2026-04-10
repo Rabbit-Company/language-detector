@@ -93,5 +93,6 @@ pub fn language() -> Language {
 			"mvene",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

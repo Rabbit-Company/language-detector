@@ -150,5 +150,6 @@ pub fn language() -> Language {
 			"सुत्छन्",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

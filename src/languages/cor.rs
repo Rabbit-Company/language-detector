@@ -131,5 +131,6 @@ pub fn language() -> Language {
 			"ken",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

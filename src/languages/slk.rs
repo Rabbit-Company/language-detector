@@ -142,5 +142,6 @@ pub fn language() -> Language {
 			"samozrejme",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

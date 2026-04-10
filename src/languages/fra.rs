@@ -128,5 +128,6 @@ pub fn language() -> Language {
 			"réduire",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

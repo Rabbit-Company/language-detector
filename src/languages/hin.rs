@@ -115,5 +115,6 @@ pub fn language() -> Language {
 			"नहीं",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

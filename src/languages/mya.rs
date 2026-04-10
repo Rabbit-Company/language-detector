@@ -121,5 +121,6 @@ pub fn language() -> Language {
 			"အားလုံး",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

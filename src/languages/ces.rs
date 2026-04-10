@@ -140,5 +140,6 @@ pub fn language() -> Language {
 			"často",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

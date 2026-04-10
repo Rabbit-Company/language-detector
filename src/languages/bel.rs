@@ -146,5 +146,6 @@ pub fn language() -> Language {
 			"нельга",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

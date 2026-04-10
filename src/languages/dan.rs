@@ -134,5 +134,6 @@ pub fn language() -> Language {
 			"falde",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

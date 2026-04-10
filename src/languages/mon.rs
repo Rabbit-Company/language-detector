@@ -133,5 +133,6 @@ pub fn language() -> Language {
 			"өөрөө",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

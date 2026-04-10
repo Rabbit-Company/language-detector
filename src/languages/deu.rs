@@ -121,5 +121,6 @@ pub fn language() -> Language {
 			"verschiedene",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

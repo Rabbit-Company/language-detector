@@ -125,5 +125,6 @@ pub fn language() -> Language {
 			"nebeut",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

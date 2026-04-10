@@ -123,5 +123,6 @@ pub fn language() -> Language {
 			"conoscere",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

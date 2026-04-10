@@ -23,5 +23,6 @@ pub fn language() -> Language {
 			"hivyo", "ndiyo", "sivyo",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

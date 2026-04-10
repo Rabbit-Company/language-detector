@@ -137,5 +137,6 @@ pub fn language() -> Language {
 			"सर्व",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

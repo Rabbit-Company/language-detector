@@ -129,5 +129,6 @@ pub fn language() -> Language {
 			"l-istess",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -11,6 +11,7 @@ pub fn language() -> Language {
 		iso_639_1: "zh",
 		iso_639_2: "zho",
 		bcp47: Some("zh-Hans"),
+		disambiguation_group: Some("zho"),
 		common_words: &[
 			// Script‑neutral characters (identical in both variants)
 			"的", "一", "是", "不", "了", "人", "我", "在", "有", "他", "中", "上", "大", "和", "地",

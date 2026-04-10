@@ -124,5 +124,6 @@ pub fn language() -> Language {
 			"of mikið",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

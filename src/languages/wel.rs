@@ -129,5 +129,6 @@ pub fn language() -> Language {
 			"un",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -117,5 +117,6 @@ pub fn language() -> Language {
 			"నెమ్మది",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

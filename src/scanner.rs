@@ -114,17 +114,18 @@ pub fn scan(languages: Vec<Language>, words: Vec<String>) -> Vec<LanguageScore> 
 			.then_with(|| b.0.confidence.partial_cmp(&a.0.confidence).unwrap())
 	});
 
-	// ── Pass 2: disambiguate variants within same iso_639_2 ─────────
+	// ── Pass 2: disambiguate variants within same disambiguation_group ─────────
 	//
-	// Find variant groups: languages sharing the same iso_639_2 where at
+	// Find variant groups: languages sharing the same disambiguation_group where at
 	// least one member has non-empty weighted_words.
 	let mut variant_groups: HashMap<String, Vec<usize>> = HashMap::new();
 	for (i, (_score, lang)) in pass1_results.iter().enumerate() {
 		if !lang.weighted_words.is_empty() {
-			variant_groups
-				.entry(lang.iso_639_2.to_string())
-				.or_default()
-				.push(i);
+			let group_key = lang
+				.disambiguation_group
+				.unwrap_or(lang.iso_639_2)
+				.to_string();
+			variant_groups.entry(group_key).or_default().push(i);
 		}
 	}
 

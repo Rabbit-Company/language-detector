@@ -130,5 +130,6 @@ pub fn language() -> Language {
 			"zat",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

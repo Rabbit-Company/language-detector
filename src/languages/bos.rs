@@ -155,5 +155,6 @@ pub fn language() -> Language {
 			"moći",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

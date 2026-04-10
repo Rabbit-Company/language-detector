@@ -102,6 +102,10 @@ pub struct Language {
 	///
 	/// Languages that don't need weighted disambiguation can leave this as `&[]`.
 	pub weighted_words: &'static [(&'static str, f64)],
+	/// If set, this language participates in Pass 2 disambiguation together
+	/// with all other languages that share the same `disambiguation_group`.
+	/// Typically used for regional variants or closely related languages.
+	pub disambiguation_group: Option<&'static str>,
 }
 
 /// Collect every registered language into a single Vec.

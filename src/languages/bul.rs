@@ -148,5 +148,6 @@ pub fn language() -> Language {
 			"никой",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

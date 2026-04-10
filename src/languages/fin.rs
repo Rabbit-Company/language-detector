@@ -118,5 +118,6 @@ pub fn language() -> Language {
 			"heittää",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

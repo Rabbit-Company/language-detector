@@ -153,5 +153,6 @@ pub fn language() -> Language {
 			"сите",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

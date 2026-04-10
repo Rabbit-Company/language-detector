@@ -149,5 +149,6 @@ pub fn language() -> Language {
 			"سے",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

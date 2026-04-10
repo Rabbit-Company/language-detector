@@ -145,5 +145,6 @@ pub fn language() -> Language {
 			"taipogi",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

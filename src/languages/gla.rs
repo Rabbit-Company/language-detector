@@ -128,5 +128,6 @@ pub fn language() -> Language {
 			"mòran",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

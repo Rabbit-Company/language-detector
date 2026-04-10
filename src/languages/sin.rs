@@ -122,5 +122,6 @@ pub fn language() -> Language {
 			"හෙමින්",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

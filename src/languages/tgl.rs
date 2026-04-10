@@ -136,5 +136,6 @@ pub fn language() -> Language {
 			"malayo",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -22,5 +22,6 @@ pub fn language() -> Language {
 			"burde",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

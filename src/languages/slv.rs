@@ -16,5 +16,6 @@ pub fn language() -> Language {
 			"potem", "vem", "mislim", "prosim", "hvala", "dobro", "ja", "nič",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

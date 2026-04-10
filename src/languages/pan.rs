@@ -130,5 +130,6 @@ pub fn language() -> Language {
 			"ਇੱਕ",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

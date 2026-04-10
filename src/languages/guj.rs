@@ -136,5 +136,6 @@ pub fn language() -> Language {
 			"ઓછું",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

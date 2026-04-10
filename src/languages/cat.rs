@@ -133,5 +133,6 @@ pub fn language() -> Language {
 			"completament",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

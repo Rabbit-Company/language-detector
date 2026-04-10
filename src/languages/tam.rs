@@ -124,5 +124,6 @@ pub fn language() -> Language {
 			"ஒன்று",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

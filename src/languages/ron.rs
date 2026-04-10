@@ -143,5 +143,6 @@ pub fn language() -> Language {
 			"atâtea",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

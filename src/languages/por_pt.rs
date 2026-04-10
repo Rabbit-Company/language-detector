@@ -10,6 +10,7 @@ pub fn language() -> Language {
 		iso_639_1: "pt",
 		iso_639_2: "por",
 		bcp47: Some("pt-PT"),
+		disambiguation_group: Some("por"),
 		common_words: &[
 			// Shared Portuguese words (identical in both variants)
 			"de", "a", "o", "que", "e", "do", "da", "em", "um", "para", "é", "com", "não", "uma", "os",

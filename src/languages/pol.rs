@@ -113,5 +113,6 @@ pub fn language() -> Language {
 			"razem",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

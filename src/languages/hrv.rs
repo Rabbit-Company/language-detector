@@ -158,5 +158,6 @@ pub fn language() -> Language {
 			"uzeti",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

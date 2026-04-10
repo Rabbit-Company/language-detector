@@ -108,5 +108,6 @@ pub fn language() -> Language {
 			"hoşça kal",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -23,5 +23,6 @@ pub fn language() -> Language {
 			"usume", "usute", "usuvad", "mõtlema",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

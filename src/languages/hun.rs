@@ -131,5 +131,6 @@ pub fn language() -> Language {
 			"tekintet nélkül",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

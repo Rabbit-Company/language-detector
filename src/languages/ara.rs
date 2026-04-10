@@ -143,5 +143,6 @@ pub fn language() -> Language {
 			"لن",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -154,5 +154,6 @@ pub fn language() -> Language {
 			"shkojnë",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

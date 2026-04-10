@@ -117,5 +117,6 @@ pub fn language() -> Language {
 			"കൂടുതൽ",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

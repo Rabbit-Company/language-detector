@@ -122,5 +122,6 @@ pub fn language() -> Language {
 			"אחד",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

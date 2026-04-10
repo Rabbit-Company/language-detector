@@ -117,5 +117,6 @@ pub fn language() -> Language {
 			"ໜ້ອຍ",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }

@@ -113,5 +113,6 @@ pub fn language() -> Language {
 			"중요하다",
 		],
 		weighted_words: &[],
+		disambiguation_group: None,
 	}
 }
