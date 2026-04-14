@@ -7,6 +7,8 @@
 ///   - SRT sequence numbers and timestamps
 ///   - SSA/ASS style override tags  `{\…}`
 ///   - SSA/ASS section headers, metadata, and `Dialogue:` lines
+///   - SSA/ASS drawing mode (`\p1`..`\p4`) - vector data, not dialogue
+///   - SSA/ASS `Comment:` and `Data:` lines
 ///   - HTML-like tags  `<…>`
 pub fn clean_subtitle_text(raw: &str) -> String {
 	let mut out = String::with_capacity(raw.len());
@@ -33,26 +35,40 @@ pub fn clean_subtitle_text(raw: &str) -> String {
 		if trimmed.starts_with('[') && trimmed.ends_with(']') {
 			continue;
 		}
-		if trimmed.contains("Dialogue:")
-			|| trimmed.contains("Format:")
-			|| trimmed.contains("Style:")
+
+		// Skip SSA/ASS non-dialogue event lines and metadata
+		if trimmed.starts_with("Comment:")
+			|| trimmed.starts_with("Data:")
+			|| trimmed.starts_with("Format:")
+			|| trimmed.starts_with("Style:")
 			|| trimmed.contains("ScriptType")
 			|| trimmed.contains("PlayResX")
 			|| trimmed.contains("PlayResY")
 		{
-			// For ASS Dialogue lines extract only the text portion
-			if trimmed.contains("Dialogue:") {
-				// Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,Actual text
-				if let Some(pos) = trimmed.rfind(",,") {
-					let text_part = &trimmed[pos + 2..];
-					let text_part = text_part
-						.replace("\\N", " ")
-						.replace("\\n", " ")
-						.replace("\\h", " ");
-					out.push_str(&text_part);
-					out.push(' ');
+			continue;
+		}
+
+		// For ASS Dialogue lines extract only the text portion
+		if trimmed.starts_with("Dialogue:") {
+			if let Some(text_part) = extract_ass_dialogue_text(trimmed) {
+				// Skip drawing-mode lines (\p1..\p4) — vector data, not speech
+				if has_drawing_mode(&text_part) {
+					continue;
 				}
+
+				let text_part = text_part
+					.replace("\\N", " ")
+					.replace("\\n", " ")
+					.replace("\\h", " ");
+				out.push_str(&text_part);
+				out.push(' ');
 			}
+			continue;
+		}
+
+		// Skip any other SSA/ASS metadata lines (key: value pattern in
+		// header sections such as [Script Info] or [Aegisub Project Garbage])
+		if is_ssa_metadata(trimmed) {
 			continue;
 		}
 
@@ -64,6 +80,84 @@ pub fn clean_subtitle_text(raw: &str) -> String {
 	let out = remove_braced_tags(&out);
 	// Remove <…> tags (HTML tags like <i>, <b>, <font …>)
 	remove_angle_tags(&out)
+}
+
+/// Extract the Text field from an ASS Dialogue line by counting to the
+/// 9th comma.
+///
+/// ASS Dialogue format (10 fields, 9 commas):
+///   Dialogue: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+///
+fn extract_ass_dialogue_text(line: &str) -> Option<String> {
+	// Find the start of fields after "Dialogue:"
+	let after_prefix = line.find("Dialogue:")?;
+	let fields_start = after_prefix + "Dialogue:".len();
+	let rest = &line[fields_start..];
+
+	// Count 9 commas to reach the Text field
+	let mut comma_count = 0;
+	for (i, ch) in rest.char_indices() {
+		if ch == ',' {
+			comma_count += 1;
+			if comma_count == 9 {
+				return Some(rest[i + 1..].to_string());
+			}
+		}
+	}
+
+	None
+}
+
+/// Check whether the raw text field (before brace-stripping) contains an
+/// ASS drawing mode tag `\p1` through `\p4` inside an override block.
+///
+/// When drawing mode is active the "text" is vector draw commands
+/// (m, l, b, s, ...) rather than spoken dialogue.
+fn has_drawing_mode(text: &str) -> bool {
+	let bytes = text.as_bytes();
+	let len = bytes.len();
+	let mut i = 0;
+
+	while i + 2 < len {
+		if bytes[i] == b'\\' && bytes[i + 1] == b'p' {
+			let d = bytes.get(i + 2).copied().unwrap_or(0);
+			if d >= b'1' && d <= b'4' {
+				// Make sure it is not a longer tag like \pos or \pbo
+				let after = bytes.get(i + 3).copied().unwrap_or(0);
+				if after == b'}' || after == b'\\' || after == 0 {
+					return true;
+				}
+			}
+		}
+		i += 1;
+	}
+
+	false
+}
+
+/// Heuristic: detect SSA/ASS metadata lines that live in header sections
+/// like [Script Info] or [Aegisub Project Garbage].  These follow a
+/// "Key: Value" pattern where the key is ASCII-only and contains no commas.
+fn is_ssa_metadata(line: &str) -> bool {
+	// Must contain a colon
+	if let Some(colon_pos) = line.find(':') {
+		// Key part is before the colon
+		let key = &line[..colon_pos];
+		// SSA metadata keys are short, ASCII, and have no commas
+		if !key.is_empty()
+			&& key.len() <= 40
+			&& key
+				.chars()
+				.all(|c| c.is_ascii_alphanumeric() || c == ' ' || c == '_')
+		{
+			return true;
+		}
+	}
+	// Lines starting with ';' are SSA comments
+	if line.starts_with(';') {
+		return true;
+	}
+	false
 }
 
 /// Tokenise text into detection units.
