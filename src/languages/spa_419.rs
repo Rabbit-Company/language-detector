@@ -78,29 +78,39 @@ pub fn language() -> Language {
 			("callate", 10.0),
 			("apurate", 10.0),
 			// =============================================================
-			// Ustedes forms – universal in LatAm, formal in Spain (weight: 3.0)
-			// These are strong indicators of Latin American Spanish.
+			// Ustedes imperative forms (weight: 5.0)
+			// In LatAm, ustedes replaces vosotros entirely, so the
+			// imperative (subjunctive) forms used as commands for "you
+			// all" are exclusively LatAm. These are NOT ambiguous with
+			// ellos/ellas indicative — they are subjunctive imperatives
+			// directed at a group.
 			// =============================================================
-			("ustedes", 3.0),
-			("tienen", 3.0),
-			("hacen", 3.0),
-			("saben", 3.0),
-			("pueden", 3.0),
-			("quieren", 3.0),
-			("deben", 3.0),
-			("vienen", 3.0),
-			("dicen", 3.0),
-			("están", 3.0),
-			("van", 3.0),
-			("comen", 3.0),
-			("beben", 3.0),
-			("viven", 3.0),
-			("salen", 3.0),
-			("piensan", 3.0),
-			("sienten", 3.0),
-			("duermen", 3.0),
-			("piden", 3.0),
-			("siguen", 3.0),
+			("escuchen", 5.0),
+			("miren", 5.0),
+			("esperen", 5.0),
+			("ayuden", 5.0),
+			("callen", 5.0),
+			("corran", 5.0),
+			("suban", 5.0),
+			("bajen", 5.0),
+			("déjenme", 5.0),
+			("sujétense", 5.0),
+			("prepárense", 5.0),
+			("cálmense", 5.0),
+			("apúrense", 5.0),
+			("levántense", 5.0),
+			("deténganse", 5.0),
+			("agárrense", 5.0),
+			("quédense", 5.0),
+			("muévanse", 5.0),
+			("siéntense", 5.0),
+			("acérquense", 5.0),
+			("aléjense", 5.0),
+			("váyanse", 5.0),
+			("fíjense", 5.0),
+			("confíen", 5.0),
+			("ganen", 5.0),
+			("aguanten", 5.0),
 			// =============================================================
 			// Colloquial and slang (weight: 5.0)
 			// =============================================================
@@ -168,7 +178,6 @@ pub fn language() -> Language {
 			("nomas", 5.0),
 			("mero", 5.0),
 			("acá", 5.0),
-			("allá", 5.0),
 			// =============================================================
 			// Regional vocabulary (weight: 3.0)
 			// =============================================================
