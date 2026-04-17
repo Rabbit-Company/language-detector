@@ -13,6 +13,7 @@ struct CliArgs {
 	file_path: String,
 	format: OutputFormat,
 	debug_lang: Option<String>,
+	dump_text: bool,
 }
 
 fn print_usage(program: &str) {
@@ -29,6 +30,8 @@ fn print_usage(program: &str) {
 	eprintln!("    -d, --debug <LANG>       Debug mode: show detailed match info for a language");
 	eprintln!("                             Accepts language name, ISO 639-1/2 code, or BCP 47 tag");
 	eprintln!("                             Examples: spa, es-419, \"Spanish\", por, pt-BR");
+	eprintln!("        --dump-text          Print the cleaned text used for word matching and exit");
+	eprintln!("                             Useful for verifying SRT/SSA/ASS dialogue extraction");
 	eprintln!("    -V, --version            Print version information");
 	eprintln!("    -h, --help               Show this help message");
 	eprintln!();
@@ -37,6 +40,7 @@ fn print_usage(program: &str) {
 	eprintln!("    {} -f json movie.srt", program);
 	eprintln!("    {} --format csv movie.srt", program);
 	eprintln!("    {} -f json movie.srt > result.json", program);
+	eprintln!("    {} --dump-text movie.ass > extracted.txt", program);
 }
 
 fn parse_args() -> CliArgs {
@@ -46,6 +50,7 @@ fn parse_args() -> CliArgs {
 	let mut format = OutputFormat::Table;
 	let mut file_path: Option<String> = None;
 	let mut debug_lang: Option<String> = None;
+	let mut dump_text = false;
 
 	let mut i = 1;
 	while i < args.len() {
@@ -78,6 +83,9 @@ fn parse_args() -> CliArgs {
 					std::process::exit(1);
 				}
 				debug_lang = Some(args[i].clone());
+			}
+			"--dump-text" => {
+				dump_text = true;
 			}
 			"-V" | "--version" => {
 				println!("Language Detector v{}", VERSION);
@@ -112,6 +120,7 @@ fn parse_args() -> CliArgs {
 		file_path,
 		format,
 		debug_lang,
+		dump_text,
 	}
 }
 
@@ -127,8 +136,19 @@ fn main() {
 		}
 	};
 
-	// Clean subtitle markup and tokenize
+	// Clean subtitle markup
 	let cleaned = cleaner::clean_subtitle_text(&raw_text);
+
+	// --dump-text: print the cleaned text that will be fed to the tokenizer
+	if cli.dump_text {
+		print!("{}", cleaned);
+		// Ensure trailing newline so terminal prompts look right
+		if !cleaned.ends_with('\n') {
+			println!();
+		}
+		return;
+	}
+
 	let words = cleaner::tokenize(&cleaned);
 
 	if words.is_empty() {

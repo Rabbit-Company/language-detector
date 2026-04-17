@@ -60,6 +60,12 @@ pub fn clean_subtitle_text(raw: &str) -> String {
 					.replace("\\N", " ")
 					.replace("\\n", " ")
 					.replace("\\h", " ");
+
+				let clean_text_part = remove_angle_tags(&remove_braced_tags(&text_part));
+				if clean_text_part.trim().chars().count() < 3 {
+					continue;
+				}
+
 				out.push_str(&text_part);
 				out.push(' ');
 			}
@@ -69,6 +75,11 @@ pub fn clean_subtitle_text(raw: &str) -> String {
 		// Skip any other SSA/ASS metadata lines (key: value pattern in
 		// header sections such as [Script Info] or [Aegisub Project Garbage])
 		if is_ssa_metadata(trimmed) {
+			continue;
+		}
+
+		let clean_text_part = remove_angle_tags(&remove_braced_tags(&trimmed));
+		if clean_text_part.trim().chars().count() < 3 {
 			continue;
 		}
 

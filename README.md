@@ -92,6 +92,7 @@ language-detector [OPTIONS] <FILE>
 
 - `-f, --format <FORMAT>` — output format: `table`, `json`, or `csv`
 - `-d, --debug <LANG>` — debug mode: show detailed match info for a language (accepts name, ISO code, or BCP 47 tag)
+- `--dump-text` — print the cleaned text used for word matching and exit (debug SRT/SSA/ASS dialogue extraction)
 - `-V, --version` — print version information
 - `-h, --help` — show help
 
