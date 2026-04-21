@@ -247,7 +247,6 @@ pub fn language() -> Language {
 			("botellón", 5.0),
 			("pasada", 5.0),
 			("pasote", 5.0),
-			("oye", 5.0),
 			("hala", 5.0),
 			("jolín", 5.0),
 			("jolines", 5.0),
