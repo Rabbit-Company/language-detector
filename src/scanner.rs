@@ -205,7 +205,7 @@ pub fn debug_languages(
 			} else if token.chars().count() > 2 {
 				if let Some(root) = word_set
 					.iter()
-					.find(|entry| entry.len() >= 4 && token.starts_with(*entry))
+					.find(|entry| entry.len() >= 5 && token.starts_with(*entry))
 				{
 					let key = format!("{} → {}", token, root);
 					let entry = common_hits.entry(key).or_insert((0, "prefix".to_string()));
@@ -305,9 +305,9 @@ fn token_matches_language(token: &str, lexicon: &HashSet<&str>) -> bool {
 	}
 
 	// Weak morphological fallback:
-	// count a token as a match if it starts with a known entry of length >= 4.
+	// count a token as a match if it starts with a known entry of length >= 5
 	// This helps with inflected/agglutinative forms without exploding false positives.
 	lexicon
 		.iter()
-		.any(|entry| entry.len() >= 4 && token.starts_with(entry))
+		.any(|entry| entry.len() >= 5 && token.starts_with(entry))
 }
