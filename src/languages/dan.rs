@@ -1,13 +1,15 @@
 use super::Language;
 
-/// Danish common words for language detection.
+/// Danish detection with Scandinavian disambiguation.
 pub fn language() -> Language {
 	Language {
 		english_name: "Danish",
 		iso_639_1: "da",
 		iso_639_2: "dan",
 		bcp47: None,
+		disambiguation_group: Some("scandinavian"),
 		common_words: &[
+			// Shared Scandinavian core (identical spelling across Danish, Norwegian Bokmål, Swedish)
 			"og",
 			"i",
 			"at",
@@ -18,33 +20,21 @@ pub fn language() -> Language {
 			"er",
 			"på",
 			"med",
-			"af",
 			"for",
-			"ikke",
 			"der",
 			"var",
-			"jeg",
-			"han",
-			"som",
 			"har",
 			"vi",
 			"de",
 			"du",
-			"hun",
 			"om",
 			"så",
 			"men",
 			"et",
-			"eller",
 			"kan",
 			"skal",
 			"vil",
 			"må",
-			"kunne",
-			"skulle",
-			"ville",
-			"måtte",
-			"burde",
 			"have",
 			"være",
 			"blive",
@@ -58,12 +48,10 @@ pub fn language() -> Language {
 			"få",
 			"finde",
 			"holde",
-			"sætte",
 			"stå",
 			"ligge",
 			"sætte",
 			"tænke",
-			"vide",
 			"kende",
 			"føle",
 			"synes",
@@ -83,7 +71,6 @@ pub fn language() -> Language {
 			"tale",
 			"lytte",
 			"høre",
-			"se",
 			"kigge",
 			"vise",
 			"lave",
@@ -98,14 +85,11 @@ pub fn language() -> Language {
 			"tabe",
 			"købe",
 			"sælge",
-			"betaler",
-			"koster",
 			"vente",
 			"komme",
 			"rejse",
 			"køre",
 			"flyve",
-			"gå",
 			"løbe",
 			"cykle",
 			"svømme",
@@ -133,7 +117,37 @@ pub fn language() -> Language {
 			"hoppe",
 			"falde",
 		],
-		weighted_words: &[],
-		disambiguation_group: None,
+		weighted_words: &[
+			// Danish‑exclusive or highly characteristic forms (weight: 10.0)
+			("jeg", 10.0),     // vs Swedish "jag"
+			("mig", 10.0),     // vs Norwegian "meg"
+			("dig", 10.0),     // vs Norwegian "deg"
+			("jer", 10.0),     // vs Norwegian "dere", Swedish "er"
+			("ikke", 10.0),    // vs Swedish "inte"
+			("af", 10.0),      // vs Norwegian/Swedish "av"
+			("hvad", 10.0),    // vs Norwegian "hva", Swedish "vad"
+			("hvem", 10.0),    // vs Swedish "vem"
+			("hvor", 10.0),    // vs Swedish "var"
+			("hvordan", 10.0), // vs Swedish "hur"
+			("hvorfor", 10.0), // vs Swedish "varför"
+			("hvis", 10.0),    // "if" (also "whose")
+			("pige", 10.0),    // "girl" vs Norwegian "jente", Swedish "flicka"
+			("dreng", 10.0),   // "boy" vs Norwegian "gutt", Swedish "pojke"
+			("mand", 5.0),     // "man" (common but helps vs Norwegian "mann")
+			("kvinde", 5.0),   // "woman" vs Norwegian "kvinne", Swedish "kvinna"
+			("barn", 5.0), // "child" (same in Norwegian, different in Swedish "barn"? Actually Swedish "barn" same; keep as neutral)
+			// Additional distinctive words (weight: 5.0)
+			("godt", 5.0),     // "well/good"
+			("meget", 5.0),    // "very"
+			("lidt", 5.0),     // "a little"
+			("igen", 5.0),     // "again"
+			("aldrig", 5.0),   // "never"
+			("altid", 5.0),    // "always"
+			("måske", 5.0),    // "maybe"
+			("gerne", 5.0),    // "gladly"
+			("hellere", 5.0),  // "rather"
+			("hurtigt", 5.0),  // "quickly"
+			("langsomt", 5.0), // "slowly"
+		],
 	}
 }
