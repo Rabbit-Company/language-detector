@@ -159,6 +159,24 @@ pub fn scan(languages: Vec<Language>, words: Vec<String>) -> Vec<LanguageScore> 
 		b.matched_words
 			.cmp(&a.matched_words)
 			.then_with(|| b.weighted_score.partial_cmp(&a.weighted_score).unwrap())
+			.then_with(|| {
+				// Only apply tie-breaker if both are Spanish variants with same matched_words
+				// and weighted_score is 0.0 (or very close)
+				if a.iso_639_2 == "spa"
+					&& b.iso_639_2 == "spa"
+					&& a.matched_words == b.matched_words
+					&& (a.weighted_score - b.weighted_score).abs() < f64::EPSILON
+				{
+					// Prefer es-419 over es-ES
+					match (a.bcp47.as_deref(), b.bcp47.as_deref()) {
+						(Some("es-419"), Some("es-ES")) => std::cmp::Ordering::Less,
+						(Some("es-ES"), Some("es-419")) => std::cmp::Ordering::Greater,
+						_ => std::cmp::Ordering::Equal,
+					}
+				} else {
+					std::cmp::Ordering::Equal
+				}
+			})
 	});
 
 	scores
