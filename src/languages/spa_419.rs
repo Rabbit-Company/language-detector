@@ -77,6 +77,11 @@ pub fn language() -> Language {
 			("sentate", 10.0),
 			("callate", 10.0),
 			("apurate", 10.0),
+			("apúrense", 10.0),
+			("lindo", 10.0),
+			("linda", 10.0),
+			("lindos", 10.0),
+			("lindas", 10.0),
 			// =============================================================
 			// Ustedes imperative forms (weight: 5.0)
 			// In LatAm, ustedes replaces vosotros entirely, so the
@@ -97,7 +102,6 @@ pub fn language() -> Language {
 			("sujétense", 5.0),
 			("prepárense", 5.0),
 			("cálmense", 5.0),
-			("apúrense", 5.0),
 			("levántense", 5.0),
 			("deténganse", 5.0),
 			("agárrense", 5.0),
@@ -256,11 +260,6 @@ pub fn language() -> Language {
 			("enojado", 3.0),
 			("enojada", 3.0),
 			("pararse", 3.0),
-			// Adjectives
-			("lindo", 3.0),
-			("linda", 3.0),
-			("lindos", 3.0),
-			("lindas", 3.0),
 		],
 	}
 }
